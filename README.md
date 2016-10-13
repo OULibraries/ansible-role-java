@@ -1,7 +1,7 @@
 OULibraries.java
 =========
 
-Installs java and related tools
+Installs java and related tools.
 
 Requirements
 ------------
@@ -9,7 +9,9 @@ Requirements
 
 Role Variables
 --------------
-
+```yaml
+use_oracle_jdk: False
+```
 
 
 Dependencies
