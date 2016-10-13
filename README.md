@@ -17,7 +17,7 @@ use_oracle_jdk: False
 Dependencies
 ------------
 
-Probalby depends on OULibraries.centos
+Probalby depends on [OULibraries.centos7](https://github.com/OULibraries/ansible-role-centos7/)
 
 Example Playbook
 ----------------
