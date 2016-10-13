@@ -1,0 +1,11 @@
+---
+- include: centos-java.yml
+  when: use_oracle_jdk == False
+  sudo: yes
+  
+- include: oracle-java.yml
+  when: use_oracle_jdk == True
+  sudo: yes
+  
+- include: apache-tools.yml
+  sudo: yes
