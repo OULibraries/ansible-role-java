@@ -1,11 +1,11 @@
 ---
 - include: centos-java.yml
   when: use_oracle_jdk == False
-  sudo: yes
+  become: yes
   
 - include: oracle-java.yml
   when: use_oracle_jdk == True
-  sudo: yes
+  become: yes
   
 - include: apache-tools.yml
-  sudo: yes
+  become: yes

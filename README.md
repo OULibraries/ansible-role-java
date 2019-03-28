@@ -1,7 +1,7 @@
 OULibraries.java
 =========
 
-Installs java and related tools.
+Installs Java and related tools.
 
 Requirements
 ------------

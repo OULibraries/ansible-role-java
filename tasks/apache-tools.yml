@@ -17,6 +17,15 @@
     group: root
     mode: 0755
 
+- name: Calculate closest apache mirror
+  shell: >
+   curl -s 'https://www.apache.org/dyn/closer.cgi?as_json=1' \
+   | python -c "import sys, json; print json.load(sys.stdin)['preferred']"
+  register: get_mirror
+
+- set_fact: 
+    java_apache_mirror:  "{{ get_mirror.stdout }}"
+
 - name: Download Apache Project java tools
   get_url:
     url: "{{ item.url }}"
@@ -25,10 +34,8 @@
     group: root
     mode: 0644
   with_items:
-    - url: "https://archive.apache.org/dist/ant/binaries/apache-ant-1.9.7-bin.tar.gz"
-      dest: "/tmp/downloads/apache-ant-1.9.7-bin.tar.gz"
-    - url: "http://mirror.cc.columbia.edu/pub/software/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz"
-      dest: "/tmp/downloads/apache-maven-3.3.9-bin.tar.gz"
+    - url: "{{ java_apache_mirror }}/maven/maven-3/{{java_maven_version}}/binaries/apache-maven-{{java_maven_version}}-bin.tar.gz"
+      dest: "/tmp/downloads/apache-maven-{{java_maven_version}}-bin.tar.gz"
 
 - name: Install Apache Project java tools
   unarchive:
@@ -37,9 +44,7 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
   with_items:
-    - src: "/tmp/downloads/apache-ant-1.9.7-bin.tar.gz"
-      dest: /opt/apache
-    - src: "/tmp/downloads/apache-maven-3.3.9-bin.tar.gz"
+    - src: "/tmp/downloads/apache-maven-{{java_maven_version}}-bin.tar.gz"
       dest: /opt/apache
 
 - name: Build standard links for Apache Java tools
@@ -48,10 +53,8 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
   with_items:
-    - src: /opt/apache/apache-ant-1.9.7
-      dest: /opt/apache/ant
-    - src: /opt/apache/apache-maven-3.3.9
-      dest: /opt/apache/maven
+     - src: /opt/apache/apache-maven-{{java_maven_version}}
+       dest: /opt/apache/maven
 
 - name: Ensure /etc/profile.d/java-tools.sh exists
   file:
@@ -65,4 +68,4 @@
   lineinfile:
     state: present
     dest: /etc/profile.d/java-tools.sh
-    line: "export PATH=/opt/apache/ant/bin:/opt/apache/maven/bin:$PATH"
+    line: "export PATH=/opt/apache/maven/bin:$PATH"

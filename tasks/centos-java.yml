@@ -1,8 +1,10 @@
 ---
 - name: Install CentOS JDK
   yum:
-    name: "{{ item }}"
+    name: "{{ packages }}"
     state: latest
-  with_items:
-    - java
+  vars:
+    packages:
+      - java
+      - ant
     

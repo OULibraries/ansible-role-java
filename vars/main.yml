@@ -1,2 +1,7 @@
 ---
 # vars file for OULibraries.java
+#
+#
+java_apache_mirror: "http://www.gtlib.gatech.edu/pub/apache"
+java_ant_version: "1.9.13"
+java_maven_version: "3.5.4"
